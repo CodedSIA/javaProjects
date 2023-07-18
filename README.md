@@ -1,2 +1,2 @@
-# javaProjects
-Check out the other branches to see more of my past Java work!
+# Username Generator
+Can't decide a gamertag or a username? Do as you please!
