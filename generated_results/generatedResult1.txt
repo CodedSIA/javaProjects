@@ -1,0 +1,82 @@
+GENERATED RESULTS #1 - Generated Results for 75 requested entries.
+
+1. EmiePlane
+2. EmieGrating
+3. EmieBumpy
+4. EmiePlus
+5. EmieDecayed
+6. EmieMischievous
+7. EmiePronounced
+8. EmieResponsible
+9. EmieMathematical
+10. EmieThermal
+11. EmieFarcical
+12. EmieFollowing
+13. EmieArdent
+14. EmieSkilled
+15. EmieGlamorous
+16. EmieGlorious
+17. EmieIndulgent
+18. EmieThankless
+19. EmieHesitant
+20. EmieFast
+21. EmieExplosive
+22. EmieUnavailable
+23. EmieFlawed
+24. EmieInherent
+25. EmieFamous
+26. EmieDanceable
+27. EmieRedeemable
+28. EmiePatched
+29. EmieAntagonistic
+30. EmieSoutheasterly
+31. EmieDisenchanted
+32. EmieSoggy
+33. EmieExcited
+34. EmieUnmodified
+35. EmieTrusty
+36. EmieLined
+37. EmieNotable
+38. EmieSnobbish
+39. EmieScrumptious
+40. EmieStacked
+41. EmieSuperficial
+42. EmieUnverified
+43. EmieSporting
+44. EmieHonorable
+45. EmieDetrimental
+46. EmieMeager
+47. EmieSingle
+48. EmieGaudy
+49. EmieSparkling
+50. EmieFive
+51. EmieRare
+52. EmieVisceral
+53. EmieClinging
+54. EmieSufficient
+55. EmieFamished
+56. EmieTrite
+57. EmieLily-livered
+58. EmieEnticing
+59. EmieDetailed
+60. EmieParking
+61. EmieEvil
+62. EmieMaster
+63. EmieFishy
+64. EmieDriven
+65. EmieStrongest
+66. EmieInactive
+67. EmieWell-honed
+68. EmieAnticorrosive
+69. EmieAuthoritarian
+70. EmieTouched
+71. EmieMenacing
+72. EmieNeglectful
+73. EmieNewest
+74. EmieDerogative
+75. EmieHopeless
+
+Total results: 75
+File written to C:\src\generated_results\generatedResult1.txt
+Generated at 07-17-2023 at 23:02:01 PDT
+Moderation enabled: true
