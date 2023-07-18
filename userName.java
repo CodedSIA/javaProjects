@@ -11,8 +11,11 @@ import java.time.format.DateTimeFormatter;
 
 public class userName {
     public static void main(String[] args) throws Exception {
-        userConfig newName = new userConfig(0,0);
-        newName.generateUserName(15000);
+        /* r = random word, u = name, n = noun, a = adjective
+           if you wish to make the generated word (except name) uppercase, just type the capital letter
+        */
+        userConfig newName = new userConfig(0,0,false);
+        newName.generateUserName("u_R", "sussy", 75, false);
         newName.printGeneratedResults();
     }
 }
@@ -22,17 +25,22 @@ class userConfig {
     private ArrayList<String> nounArr;
     private ArrayList<String> adjArr;
     private ArrayList<String> userNames;
+    private ArrayList<String> wordsArr;
+    private ArrayList<String> moderatedWords;
     private int generateAmount;
     private int fileAllocation;
+    private boolean moderateWord;
 
-    public userConfig(int generateAmount, int fileAllocation) {
+    public userConfig(int generateAmount, int fileAllocation, boolean moderateWord){
         this.generateAmount = generateAmount;
         this.fileAllocation = fileAllocation;
+        this.moderateWord = moderateWord;
         nounArr = new ArrayList<>();
         adjArr = new ArrayList<>();
         userNames = new ArrayList<>();
+        wordsArr = new ArrayList<>();
+        moderatedWords = new ArrayList<>();
     }
-
 
     //FORMAT NUMBERS
     public String getNum(int putNum){
@@ -62,32 +70,99 @@ class userConfig {
         }
     }
 
-    //GENERATE USERNAME <---FIX HERE
-    public ArrayList<String> generateUserName(int amountCombo) throws Exception {
+    public void fillWordArrFromFile() {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/infFile.txt"))) {
+            String someWord;
+            while ((someWord = br.readLine()) != null) {
+                wordsArr.add(someWord);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //APPEND FROM MODERATION FILES
+    public void modWords() {
+        String blacklistedWord;
+        //get moddedwords default
+        try (BufferedReader br = new BufferedReader(new FileReader("src/mod_packager/moderFile.txt"))) {
+            while ((blacklistedWord = br.readLine()) != null) {
+                moderatedWords.add(blacklistedWord);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //get moddedwords set by user
+        try (BufferedReader br = new BufferedReader(new FileReader("src/mod_packager/userMod.txt"))) {
+            while ((blacklistedWord = br.readLine()) != null) {
+                moderatedWords.add(blacklistedWord);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        blacklistedWord = null;
+    }
+
+
+    //GENERATE USERNAME
+    public ArrayList<String> generateUserName(String wordFormat, String userName, int amountCombo, boolean doModerate) throws Exception {
+        moderateWord = doModerate;
         generateAmount = amountCombo;
         fillAdjArrFromFile();
         fillNounArrFromFile();
-        String firstChar = "";
-        String lastChar = "";
-        String generatedUsername = "";
-        int pickAdjective = 0;
-        int pickNoun = 0;
+        fillWordArrFromFile();
+        if(doModerate){modWords();}
+
         int adjRangeVal = adjArr.size();
         int nounRangeVal = nounArr.size();
-        for(int i = 0; i < generateAmount; i++){
-            pickAdjective = (int) (Math.random() * adjRangeVal);
-            pickNoun = (int) (Math.random() * nounRangeVal);
-            firstChar = adjArr.get(pickAdjective);
-            lastChar = nounArr.get(pickNoun);
-            generatedUsername = firstChar + lastChar.substring(0, 1).toUpperCase() + lastChar.substring(1);
+        int wordRangeVal = wordsArr.size();
+
+        for (int i = 0; i < generateAmount; i++) {
+            String generatedUsername = "";
+            String setAdj;
+            String setNoun;
+            String setWord;
+            for (int j = 0; j < wordFormat.length(); j++) {
+                if (wordFormat.substring(j, j + 1).equalsIgnoreCase("r")) {
+                    int pickWord = (int) (Math.random() * wordRangeVal);
+                    setWord = wordsArr.get(pickWord);
+                    if (wordFormat.substring(j, j + 1).equals("R")) {
+                        setWord = setWord.substring(0, 1).toUpperCase() + setWord.substring(1);
+                    }
+                    generatedUsername += setWord;
+                }
+                else if (wordFormat.substring(j, j + 1).equalsIgnoreCase("u") && !userName.equalsIgnoreCase("null")) {
+                    generatedUsername += userName;
+                } 
+                else if (wordFormat.substring(j, j + 1).equalsIgnoreCase("n")) {
+                    int pickNoun = (int) (Math.random() * nounRangeVal);
+                    setNoun = nounArr.get(pickNoun);
+                    if (wordFormat.substring(j, j + 1).equals("N")) {
+                        setNoun = setNoun.substring(0, 1).toUpperCase() + setNoun.substring(1);
+                    }
+                    generatedUsername += setNoun;
+                } 
+                else if (wordFormat.substring(j, j + 1).equalsIgnoreCase("a")) {
+                    int pickAdjective = (int) (Math.random() * adjRangeVal);
+                    setAdj = adjArr.get(pickAdjective);
+                    if (wordFormat.substring(j, j + 1).equals("A")) {
+                        setAdj = setAdj.substring(0, 1).toUpperCase() + setAdj.substring(1);
+                    }
+                    generatedUsername += setAdj;
+                }
+                else{
+                    generatedUsername += wordFormat.substring(j, j + 1);
+                }
+            }
             userNames.add(generatedUsername);
-            System.out.println(i+1 + ". " + generatedUsername);
+            System.out.println(i + 1 + ". " + generatedUsername);
         }
         return userNames;
     }
-    
+
+
     //GET TIME
-    public String printTime(){
+    public String printTime() {
         //Get the current date and time in the system's default timezone
         LocalDateTime currentTime = LocalDateTime.now();
         ZoneId zone = ZoneId.systemDefault();
@@ -125,7 +200,7 @@ class userConfig {
         for (int i = 0; i < userNames.size(); i++) {
             writer.write(i+1 + ". " + userNames.get(i) + "\n");
         }
-        writer.write("\nTotal results: " + userNames.size() + "\nFile written to " + generatedFileName + "\nGenerated at " + printTime());
+        writer.write("\nTotal results: " + userNames.size() + "\nFile written to " + generatedFileName + "\nGenerated at " + printTime() +"\nModeration enabled: " + moderateWord);
         writer.close();
         System.out.println("Result successfully generated to " + generatedFileName + " @ " + printTime());
         return null;
